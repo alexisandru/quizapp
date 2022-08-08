@@ -1,0 +1,42 @@
+{
+	"publications": [
+		{
+			"id": 1,
+			"id_auth": 1,
+			"description": "lorem ipsum dolor met",
+			"options": [
+				{
+					"text": "vote 1",
+					"votes": [2, 3, 4, 5]
+				},
+				{
+					"text": "vote 2",
+					"votes": [6, 7]
+				}
+			],
+			"buttons": {
+				"like": [2, 5, 7],
+				"dislike": []
+			}
+		},
+		{
+			"id": 2,
+			"id_auth": 1,
+			"description": "publicacion nr2",
+			"options": [
+				{
+					"text": "vote 1",
+					"votes": [2, 3, 4, 5, 6, 7, 8, 9, 10]
+				},
+				{
+					"text": "vote 2",
+					"votes": [12]
+				}
+			],
+			"buttons": {
+				"like": [2, 5, 7],
+				"dislike": []
+			}
+		}
+	]
+}
