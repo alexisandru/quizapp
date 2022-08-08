@@ -7,7 +7,7 @@
 			"options": [
 				{
 					"text": "vote 1",
-					"votes": [2, 3, 4, 5]
+					"votes": [2, 3, 4, 5, 1]
 				},
 				{
 					"text": "vote 2",

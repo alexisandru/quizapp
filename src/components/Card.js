@@ -5,15 +5,18 @@ import profile from '../assets/gris.jpg'
 
 const Card = ({info}) => {
 	const [totalVotes, setTotalVotes] = useState(0)
+	
 
 	useEffect(() => {
-		info.options.map(item => setTotalVotes(prev => prev + item.votes.length))
+		info.options.map(item => {
+			setTotalVotes(prev => prev + item.votes.length)
+		})
 		return ()=> setTotalVotes(0)
 	}, [info.options])
 
 	const votesOptions = info.options.map(item => {	
 		const vo = item.votes.length
-		return <Vote total={(vo * 100) / totalVotes}>{item.text}</Vote>
+		return <Vote total={(vo * 100) / totalVotes} voted={item.votes.includes(1)}>{item.text}</Vote>
 	})
 
 	return (
@@ -89,6 +92,8 @@ const Vote = styled.div`
 	background: -moz-linear-gradient(90deg, rgba(0,0,0, 0.2) ${props => props.total}%, #ffffff 0%);
   	background: -webkit-linear-gradient(90deg, rgba(0,0,0, 0.2) ${props => props.total}%, #ffffff 0%);
 	background: linear-gradient(90deg, rgba(0,0,0, 0.2) ${props => props.total}%, #ffffff 0%);
+
+	color: ${props => props.voted ? "red" : "blue"};
 	
 	&:first-child {
 		margin-bottom: 10px;
