@@ -1,123 +1,92 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import styled from 'styled-components'
 
-import profile from '../assets/gris.jpg'
+const Card = ({pregunta}) => {
 
-const Card = ({info}) => {
-	const [totalVotes, setTotalVotes] = useState(0)
-	
+	const [respuestas, setRespuestas] = useState([])
+	const [correcto, setCorrecto] = useState("")
+	const [selected, setSelected] = useState(null)
+	const [alea, setAlea] = useState([])
 
 	useEffect(() => {
-		info.options.map(item => {
-			setTotalVotes(prev => prev + item.votes.length)
-		})
-		return ()=> setTotalVotes(0)
-	}, [info.options])
+		setRespuestas([pregunta.correct_answer, ...pregunta.incorrect_answers])
+		setCorrecto(pregunta.correct_answer)
+	}, [pregunta.correct_answer, pregunta.incorrect_answers])
 
-	const votesOptions = info.options.map(item => {	
-		const vo = item.votes.length
-		return <Vote total={(vo * 100) / totalVotes} voted={item.votes.includes(1)}>{item.text}</Vote>
+	useEffect(() => {
+		const aray = respuestas
+		for (let i = aray.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1))
+			const temp = aray[i]
+			aray[i] = aray[j]
+			aray[j] = temp
+		}
+		setAlea(aray)
+	}, [respuestas])
+
+	/*
+	const shuffle = () => {
+		const aray = respuestas
+		for (let i = aray.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1))
+			const temp = aray[i]
+			aray[i] = aray[j]
+			aray[j] = temp
+		}
+		return aray
+	}*/
+
+	const res = alea.map((item, i) => {
+		return (
+			<Button key={i} selected={i === selected} onClick={() => setSelected(i)}>{item}</Button>
+		)
 	})
+
+	const HTMLDecode = (textString) => {
+	    let doc = new DOMParser().parseFromString(textString, "text/html");
+	    return doc.documentElement.textContent;
+	}
 
 	return (
 		<Container>
-			<Profile>
-				<a href="!#"><ProfileImage src={profile} /></a>
-				<ProfileName href="!#">John Doe</ProfileName>
-			</Profile>
-
-			<p>{info.description}</p>
-
-			<Votes>
-				{votesOptions}
-			</Votes>
-			<p>Total Votes: {totalVotes}</p>
+			<Question>{HTMLDecode(pregunta.question)}</Question>
 			<Buttons>
-				<Button>Like</Button>
-				<Button>Dislike</Button>
-				<Button>Share</Button>
+				{res}	
 			</Buttons>
+			
 		</Container>
 	)
 }
 
 export default Card
 
-
 const Container = styled.div`
-	
-	background-color: rgba(255, 255, 255);
-	border-radius: 5px;
-	padding: 10px 20px;
-	margin-bottom: 20px;
-	box-shadow:
-      0 1px 1px hsl(0deg 0% 0% / 0.075),
-      0 2px 2px hsl(0deg 0% 0% / 0.075),
-      0 4px 4px hsl(0deg 0% 0% / 0.075),
-      0 8px 8px hsl(0deg 0% 0% / 0.075),
-      0 16px 16px hsl(0deg 0% 0% / 0.075)
-    ;
-` 
+	border: 1px solid #333;
+	align-self: center;
+	justify-self: center;
 
-const Profile = styled.div`
-	display: flex;
-	align-items: center;
-`
+	width: 50%;
 
-const ProfileImage = styled.img`
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-`
-
-const ProfileName = styled.a`
-	text-decoration: none;
-	color: #333;
-	margin-left: 15px;
-	font-size: 1.2em;
-
-	&:hover {
-		text-decoration: underline;
-	}
-`
-
-const Votes = styled.div`
-	margin: 10px 0;	
-`
-
-const Vote = styled.div`
-	//border: 1px solid rgba(0,0,0,0.2);
 	border-radius: 5px;
 	padding: 10px;
-	background: -moz-linear-gradient(90deg, rgba(0,0,0, 0.2) ${props => props.total}%, #ffffff 0%);
-  	background: -webkit-linear-gradient(90deg, rgba(0,0,0, 0.2) ${props => props.total}%, #ffffff 0%);
-	background: linear-gradient(90deg, rgba(0,0,0, 0.2) ${props => props.total}%, #ffffff 0%);
+`
 
-	color: ${props => props.voted ? "red" : "blue"};
-	
-	&:first-child {
-		margin-bottom: 10px;
-	}
-
-	&:hover {
-		cursor: pointer;
-	}
+const Question = styled.p`
+	font-size: 1.1em;
+	font-weight: 600;
 `
 
 const Buttons = styled.div`
 	display: flex;
+	flex-direction: column;
 `
 
 const Button = styled.button`
-	flex-grow: 1;
-	padding: 10px;
+	padding: 3px; 
 	font-size: 1em;
-	border-radius:5px;
-	background-color: transparent;
-	border: none;
+	margin-top: 5px;
+	border-radius: 5px;
+	cursor: pointer;
 
-	&:hover {
-		background-color: rgba(0,0,0,0.2);
-		cursor: pointer;
-	}
+	background-color: ${props => props.selected ? "#333" : "#fff"}
 `
