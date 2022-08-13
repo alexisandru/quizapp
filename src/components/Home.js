@@ -17,7 +17,7 @@ const Home = ({addOptions}) => {
 	}, [])
 
 	const allCategories = categories.map(item => {
-		return <option value={item.id}>{item.name}</option>
+		return <Option value={item.id}>{item.name}</Option>
 	})
 
 	const handleOptions = (e) => {
@@ -35,34 +35,34 @@ const Home = ({addOptions}) => {
 	return (
 		<Container>
 			<Content>
-				<label>Amount of questions:</label>
-				<select onChange={handleOptions}  title="amount">
-					<option>3</option>
-					<option>5</option>
-					<option>10</option>
-				</select>
+				<Label>Amount of questions:</Label>
+				<Select onChange={handleOptions}  title="amount">
+					<Option>3</Option>
+					<Option>5</Option>
+					<Option>10</Option>
+				</Select>
 
-				<label>Category:</label>
-				<select onChange={handleOptions}  title="category">
-					<option value="any">Any category</option>
+				<Label>Category:</Label>
+				<Select onChange={handleOptions}  title="category">
+					<Option value="any">Any category</Option>
 					{allCategories}
-				</select>
+				</Select>
 
-				<label>Difficulty:</label>
-				<select onChange={handleOptions}  title="difficulty">
-					<option value="any">Any difficult</option>
-					<option value="easy">Easy</option>
-					<option value="medium">Medium</option>
-					<option value="hard">Hard</option>
-				</select>
+				<Label>Difficulty:</Label>
+				<Select onChange={handleOptions}  title="difficulty">
+					<Option value="any">Any difficult</Option>
+					<Option value="easy">Easy</Option>
+					<Option value="medium">Medium</Option>
+					<Option value="hard">Hard</Option>
+				</Select>
 
-				<label>Type:</label>
-				<select onChange={handleOptions}  title="type">
-					<option value="boolean">True/False</option>
-					<option value="multiple">Multiple Choice</option>
-				</select>
+				<Label>Type:</Label>
+				<Select onChange={handleOptions}  title="type">
+					<Option value="boolean">True/False</Option>
+					<Option value="multiple">Multiple Choice</Option>
+				</Select>
 			</Content>
-			<button onClick={() => console.log(send())}>jj</button>
+			<Start onClick={() => send()}>Start</Start>
 		</Container>
 	)
 }
@@ -71,14 +71,56 @@ export default Home
 
 const Container = styled.div`
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	height: inherit;
+
+	@media screen and (max-width: 650px) {
+     	width: 100%; 
+    }
 `
 
 const Content = styled.div`
-	border: 1px solid #333;
-
 	display: flex;
 	flex-direction: column;
+
+	box-shadow: 0 1px 10px 1px rgba(0,0,0,0.4);
+	padding: 30px;
+	border-radius: 5px;
+
+	@media screen and (max-width: 650px) {
+     	width: 90%; 
+    }
+`
+
+const Option = styled.option`
+	font-size: 1em;
+`
+
+const Select = styled.select`
+	font-size: 1.1em;
+	border-radius: 5px;
+	padding: 10px;
+	color: rgba(0,0,0,0.9);
+`
+
+const Label = styled.label`
+	font-size: 1.1em;
+	margin-bottom: 5px;
+	&:not(:first-child) {
+		margin-top: 20px;
+	}
+`
+
+const Start = styled.button`
+	align-self: center;
+	border-radius: 5px;
+	background-color: rgba(212, 84, 4, 0.4);
+	padding: 15px 30px;
+	font-size: 1em;
+	box-shadow: 0 1px 5px 1px rgba(0,0,0,0.5);
+	cursor: pointer;
+	border: none;
+	margin-top: 20px;
 `

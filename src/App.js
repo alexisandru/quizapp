@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
 import Home from './components/Home'
-import Card from './components/Card'
 import Cards from './components/Cards'
 import Header from './components/Header'
 
@@ -21,13 +20,9 @@ function App() {
     fetch(`https://opentdb.com/api.php?amount=${options.amount}${options.difficulty !== "any" ? "&difficulty=" + options.difficulty : ""}${options.category !== "any" ? "&category=" + options.category : ""}&type=${options.type}&token=${token}`)
     .then(res => res.json())
     .then(data => setPreguntas(data.results))
-  }, [options])
+  }, [options, token])
 
-  const cards = preguntas.map(item => {
-    return (
-      <Card pregunta={item} />
-    )
-  }) 
+  
 
   /*
   {
@@ -37,13 +32,16 @@ function App() {
       }
   */
 
+  const reiniciar = () => {
+    setPreguntas([])
+  }
 
   return (
     <Container >
       <Header />
       {
         preguntas.length !== 0
-        ? <Cards allQuestions={preguntas} />
+        ? <Cards allQuestions={preguntas} reiniciar={reiniciar}/>
         : <Home addOptions={setOptions} />
       }
     </Container>
@@ -57,4 +55,5 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
+
 `
